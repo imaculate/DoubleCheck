@@ -2,9 +2,9 @@
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="MailApp">
   <Id>47a6b43f-3019-4c72-9d02-028e9612d696</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>[Provider name]</ProviderName>
+  <ProviderName>[Imaculate Mosha]</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="mailAddin"/>
+  <DisplayName DefaultValue="Double Check"/>
   <Description DefaultValue="Never send email to wrong recipient again"/>
   <HighResolutionIconUrl DefaultValue="https://localhost:8443/images/email-icon.png"/>
   <Hosts>
