@@ -73,6 +73,8 @@
             
         }
          event.data.callback(rcpts);
+         if(document.getElementById('notification-message-body').innerText.trim()=="")
+          write("All good! You can send this email guilty-free!")
                         
         }); // End getAsync for bcc-recipients.
      }
