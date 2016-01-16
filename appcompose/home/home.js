@@ -7,19 +7,19 @@
     jQuery(document).ready(function(){
       app.initialize();
 
-      jQuery('#check-recipients').click(checkRecipientsMessage);
+      
+      jQuery('#check-reply-self').click({callback: checkReplySelf}, checkRecipients);
+      jQuery('#check-addressee-recipient').click({callback: matchAddressee} , checkRecipients );
+      jQuery('#check-reply-all').click({callback: checkReplyAll}, checkRecipients);
+      jQuery('#check-all').click({callback: checkAddresses}, checkRecipients);
     });
   };
 
 
-  function getSubject(){
-    Office.cast.item.toItemCompose(Office.context.mailbox.item).subject.getAsync(function(result){
-      app.showNotification('The current subject is', result.value);
-    });
-  }
 
 
-  function checkRecipientsMessage(){
+  function checkRecipients(event){
+    
     app.showNotification('The status of recipients','');
     var item = Office.context.mailbox.item;
     var toRecipients, ccRecipients, bccRecipients;
@@ -72,7 +72,7 @@
               rcpts = rcpts.concat(asyncResult.value)
             
         }
-         checkAddresses(rcpts);
+         event.data.callback(rcpts);
                         
         }); // End getAsync for bcc-recipients.
      }
@@ -80,23 +80,42 @@
     
   }
 
-  function checkAddresses (emails) {
-    
-     
-    if(emails.length == 0){
-      write("Your email has no recipients.");
-      return;
 
-    }else if(emails.length == 1 ){
-         getFromBody(emails); 
+  function checkReplySelf(emails){
+    var myAddress = Office.context.mailbox.userProfile.emailAddress;
+
+      for(var i =0; i<emails.length; i++){
+        if(emails[i].emailAddress == myAddress){
+          write("You are sending this email to yourself, is this intentional?");
+      }
+
+    }
+    
+
+  }
+
+  function checkReplyAll(emails){
+    if(emails.length>1){ 
+      write("There are many recipients to this email, is it intentional?")
+    }
+  }
+
+  function matchAddressee(emails){
+    if(emails.length == 1 ){
+         getAddresseeFromBody(emails); 
      
       
-    }else{ 
-      write("There are many recipients to this email, is it intentional?")
+    }
+
   }
+
+  function checkAddresses (emails) {
+      checkReplySelf(emails);
+      checkReplyAll(emails);
+      matchAddressee(emails);
 }
 
-function getFromBody(emails){
+function getAddresseeFromBody(emails){
   var salutation = "";
   Office.context.mailbox.item.body.getAsync("text",
         function callback(asyncResult) {
@@ -132,12 +151,8 @@ function getFromBody(emails){
 
                         }
 
-                        //now check that I haven't addressed myself.
-                        var myAddress = Office.context.mailbox.userProfile.emailAddress;
-                        if(emails[0].emailAddress == myAddress){
-                            write("You are sending this email to yourself, is this intentional?");
-                        }
-              }     
+                        
+                }     
 
             }
           } 
@@ -146,7 +161,7 @@ function getFromBody(emails){
 }
 
   function write(message){
-    document.getElementById('notification-message').innerText += message+ '\n'; 
+    document.getElementById('notification-message-body').innerText += message+ '\n'; 
 }
 
 })();
