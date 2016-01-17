@@ -20,7 +20,7 @@
 
   function checkRecipients(event){
     
-    app.showNotification('The status of recipients','');
+    app.showNotification('Issues regarding your recipients','');
     var item = Office.context.mailbox.item;
     var toRecipients, ccRecipients, bccRecipients;
     var rcpts = [];
@@ -33,18 +33,18 @@
        // Use asynchronous method getAsync to get each type of recipients
     // of the composed item. Each time, this example passes an anonymous 
     // callback function that doesn't take any parameters.
-    toRecipients.getAsync(function (asyncResult) {
+    bccRecipients.getAsync(function (asyncResult) {
         if (asyncResult.status == Office.AsyncResultStatus.Failed){
             write(asyncResult.error.message);
         }
         else {
-            // Async call to get to-recipients of the item completed.
-            // Display the email addresses of the to-recipients.
+            // Async call to get bcc-recipients of the item completed.
+            // Display the email addresses of the bcc-recipients.
              rcpts = rcpts.concat(asyncResult.value);
               
 
         }    
-    }); // End getAsync for to-recipients.
+    }); // End getAsync for bcc-recipients.
 
     // Get any cc-recipients.
     ccRecipients.getAsync(function (asyncResult) {
@@ -59,24 +59,26 @@
         }
     }); // End getAsync for cc-recipients.
 
-    // If the item has the bcc field, i.e., item is message,
-    // get any bcc-recipients.
-    if (bccRecipients) {
-        bccRecipients.getAsync(function (asyncResult) {
+    // If the item has the to field, i.e., item is message,
+    // get any to-recipients.
+    if (toRecipients) {
+        toRecipients.getAsync(function (asyncResult) {
         if (asyncResult.status == Office.AsyncResultStatus.Failed){
             write(asyncResult.error.message);
         }
         else {
-            // Async call to get bcc-recipients of the item completed.
-            // Display the email addresses of the bcc-recipients.
+            // Async call to get to-recipients of the item completed.
+            // Display the email addresses of the to-recipients.
+            //do this last since to is compulsory attempt to escape async calls woos
               rcpts = rcpts.concat(asyncResult.value)
+              event.data.callback(rcpts);
+              if(document.getElementById('notification-message-body').innerText.trim()=="")
+                write("All good! You can send this email guilty-free!")
             
         }
-         event.data.callback(rcpts);
-         if(document.getElementById('notification-message-body').innerText.trim()=="")
-          write("All good! You can send this email guilty-free!")
+        
                         
-        }); // End getAsync for bcc-recipients.
+        }); // End getAsync for to-recipients.
      }
 
     
@@ -103,7 +105,7 @@
   }
 
   function matchAddressee(emails){
-    if(emails.length == 1 ){
+    if(emails.length >0  ){
          getAddresseeFromBody(emails); 
      
       
@@ -137,27 +139,45 @@ function getAddresseeFromBody(emails){
               if(i!= lines.length){
                  salutation = firstLine.trim().split(' ');
                    if(salutation.length == 0){
-                      write("Your email has no salutation, please add that in and press this button again");
+                      write("Your email does not yet have a salutation");
                       //check that you are not addressing yourself - 
 
                     }else{
                         
                         var possibleName = salutation[(salutation.length)-1];
-                        possibleName = possibleName.replace(/[^a-zA-Z0-9-]/g, '')
-                        if(emails[0].displayName.indexOf(possibleName) < 0){
+                        possibleName = possibleName.replace(/[^a-zA-Z0-9-]/g, '');
+                        if(emails.length == 1){
+                          if(emails[0].displayName.indexOf(possibleName) < 0){
                         //it could be that its not a name , check from dictionary
                             if(EnglishWords.indexOf(possibleName.toLowerCase()) != -1){//its an english word ,thanks, you , congratulations , hi , etc
                                 write("We think you haven't addressed the recipient , we might be wrong");
                             }
                             write("Looks like this email is addressed "+ possibleName+ " but is being sent to "+ emails[0].displayName);
-
-                        }
+                          }//end of a non match
+                        
+                        }else{
+                        //many addresses check that at least one
+                          var found = false; 
+                          for(var i =0; i<emails.length; i++){
+                            if(emails[i].displayName.indexOf(possibleName) >= 0){
+                              found = true;
+                            }
+                          }
+                          if(!found){
+                            write("Looks like none of the recipients of this email are addressed in this email");
+                            if(EnglishWords.indexOf(possibleName.toLowerCase()) != -1){//its an english word ,thanks, you , congratulations , hi , etc
+                                write("We think you haven't addressed the recipient , we might be wrong");
+                            }
+                            
+                            write("You are addressing "+ possibleName);
+                          }
+                        } //end of many addresses
 
                         
-                }     
+                    }//end of salutation found     
 
-            }
-          } 
+                }//body has words
+              }//end of no error status 
         });
       return salutation;
 }
