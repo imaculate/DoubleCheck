@@ -11,7 +11,7 @@ This project is written to be a submission to HackProductivity (http://msoffice3
 so that emails are not sent to the wrong or unnecessary recipients.
 
 Instructions: 
-Extract the tar file.
+Extract the zip file.
 Add the add-in from file to your outlook by uploading 'manifest-doublecheck.xml' from the project root folder.
 Navigate to the extracted folder from the command line. 
 Run the command 'gulp serve-static'
