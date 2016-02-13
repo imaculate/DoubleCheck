@@ -1,16 +1,16 @@
 /* Page-specific styling */
 
 /* Formatting for the sample buttons */
-
-#set-subject {
-    width: 100px;
-    margin-right: 5px;
+.button {
+    background-color: #2b900b;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
 }
 
-#get-subject {
-    width: 100px;
-}
 
-#add-to-recipients {
-    width: 205px;
-}

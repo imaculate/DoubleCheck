@@ -6,7 +6,8 @@
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Double Check"/>
   <Description DefaultValue="Never send email to wrong recipient again"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:8443/images/email-icon.png"/>
+  <IconUrl DefaultValue="https://localhost:8443/images/green-64.png" />
+  <HighResolutionIconUrl DefaultValue="https://localhost:8443/images/green-80.png"/>
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
@@ -16,12 +17,6 @@
     </Sets>
   </Requirements>
   <FormSettings>
-    <Form xsi:type="ItemRead">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://localhost:8443/appread/home/home.html"/>
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
     <Form xsi:type="ItemEdit">
       <DesktopSettings>
         <SourceLocation DefaultValue="https://localhost:8443/appcompose/home/home.html"/>
@@ -30,9 +25,7 @@
   </FormSettings>
   <Permissions>ReadWriteItem</Permissions>
   <Rule xsi:type="RuleCollection" Mode="Or">
-    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
-    <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Read"/>
     <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Edit"/>
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>

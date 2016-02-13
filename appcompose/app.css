@@ -1,7 +1,7 @@
 /* Common app styling */
 
 #content-header {
-    background: #2a8dd4;
+    background: #317887;
     color: #fff;
     position: absolute;
     top: 0;
@@ -26,7 +26,7 @@
 }
 
 #notification-message {
-    background-color: #818285;
+    background-color: #317887;
     color: #fff;
     position: absolute;
     width: 100%;

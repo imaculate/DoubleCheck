@@ -2,7 +2,7 @@
   'use strict';
 
   // The initialize function must be run each time a new page is loaded
-  var EnglishWords = ["you", "thanks",  "congratulations", "congrats","greetings", "afternoon", "morning", "evening", "hi","good" ,"day", "goodnews", "news", "hello", "dear", "one" ]
+  var EnglishWords = ["you", "thanks", "awesome", "congratulations", "congrats","greetings", "afternoon", "morning", "evening", "hi","good" ,"day", "goodnews", "news", "hello", "dear", "one" ]
   Office.initialize = function(reason){
     jQuery(document).ready(function(){
       app.initialize();
@@ -72,8 +72,12 @@
             //do this last since to is compulsory attempt to escape async calls woos
               rcpts = rcpts.concat(asyncResult.value)
               event.data.callback(rcpts);
-              if(document.getElementById('notification-message-body').innerText.trim()=="")
+              if(document.getElementById('notification-message-body').innerText.trim()==""){
                 write("All good! You can send this email guilty-free!")
+                jQuery("#notification-message").css("background-color", "#317887")
+              }else{
+                jQuery("#notification-message").css("background-color", "#e50d17")
+              }
             
         }
         
